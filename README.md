@@ -1,6 +1,9 @@
 # github_batch_organisation_invite
 Enable you to invite several users to your organisation using a file containing the emails of each user to be invited, one per line.
-This meets with GitHub rate limiting requirements detailed here: https://developer.github.com/v3/#rate-limiting
+Rate limit is 500 per day or 50 if you do not meet certain requirements.
+For more informations see: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#set-organization-membership-for-a-user
+
+Another option, if using GitHub Classroom, is where you invite using an assignment link or add multiple users at once through the rooster creation. With the assignment you can automatically create associated repositories and create teams if you want. See: https://classroom.github.com/help/creating-an-individual-assignment https://classroom.github.com/help/create-group-assignments and https://classroom.github.com/help/import-roster-from-lms
 
 To run this script, you will need:
 - Python 3.x installed (tested with 3.8).
