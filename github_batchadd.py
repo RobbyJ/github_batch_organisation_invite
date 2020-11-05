@@ -1,16 +1,12 @@
 # An OAuth access token is needed, see: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token
+# Rate limit is 500 per day or 50 if you do not meet certain requirements.
+# For more informations see: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#set-organization-membership-for-a-user
 import requests
 import time
 import sys
 import getopt
 
-# Avoid rate limit cap (5000 per hour)
-# 60 minutes * 60 seconds / 5000 rate limit = 0.72 seconds for each transaction
-ratelimitdelay = 1
 examplecommandline = 'Expecting 4 arguments:   github_batchadd.py -o <your_organistionname> -u <github_username> -t <github_personal_token> -f <list_of_emails_input_file>'
-
-print('Number of arguments:', len(sys.argv), 'arguments.')
-print('Argument List:', str(sys.argv))
 
 if (len(sys.argv)!=9):
     print(examplecommandline)
@@ -51,11 +47,15 @@ except:
     sys.exit(3)
 
 content = [line.strip() for line in content]
+invitecount = 0
 for email in content:
     if (email!=""):
         r = requests.post('https://api.github.com/orgs/' + org + '/invitations', headers=h, json={"email":email}, auth = (username, token))
-        time.sleep(ratelimitdelay)
+        time.sleep(1)
         print(r.status_code, r.reason)
         print(r.text)
         if (r.status_code!=201):
+            print("Error occurred. " + str(invitecount) + " have been invited. See error information above.")
             sys.exit(4)
+        invitecount+=1
+print("Finished. " + str(invitecount) + " has been invited.")
